@@ -1,12 +1,16 @@
 package com.example.archdemo;
 
+import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baurine.multitypeadapter.MultiTypeAdapter;
 import com.example.archdemo.arch.AppDatabase;
@@ -16,11 +20,13 @@ import com.example.archdemo.databinding.TodoModel;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends LifecycleActivity {
 
     private MultiTypeAdapter adapter = new MultiTypeAdapter();
     private EditText etContent;
     private RecyclerView recyclerView;
+
+    private MutableLiveData<String> contentLiveData = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         showTodosFromDb();
+
+        observeLiveData();
     }
 
     private void initViews() {
@@ -62,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         if (content.isEmpty()) return;
         etContent.setText("");
 
+        contentLiveData.setValue(content);
+
         Todo todo = new Todo(content);
         AppDatabase.getDb().todoDao().insert(todo);
 
@@ -76,5 +86,14 @@ public class MainActivity extends AppCompatActivity {
             adapter.addItem(new TodoModel(todo).createItem(adapter));
         }
         adapter.notifyDataSetChanged();
+    }
+
+    private void observeLiveData() {
+        contentLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
