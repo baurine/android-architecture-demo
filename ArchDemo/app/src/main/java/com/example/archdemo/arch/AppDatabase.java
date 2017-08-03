@@ -3,7 +3,8 @@ package com.example.archdemo.arch;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.content.Context;
+
+import com.example.archdemo.ArchDemoApp;
 
 /**
  * Created by baurine on 8/3/17.
@@ -15,9 +16,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TodoDao todoDao();
 
-    public static AppDatabase getDb(Context context) {
+    public static AppDatabase getDb() {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+            INSTANCE = Room.databaseBuilder(ArchDemoApp.getInstance(),
                                             AppDatabase.class, "todo-db")
                     .allowMainThreadQueries()
                     .build();

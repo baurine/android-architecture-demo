@@ -13,17 +13,19 @@ public class TodoModel {
     }
 
     public TodoModel(String content) {
-        this.content = content;
-        this.completed = false;
+        // this.content = content;
+        // this.completed = false;
     }
 
     public TodoModel(Todo todo) {
-        this.id = todo.id;
-        this.content = todo.content;
-        this.completed = todo.completed;
+        // this.id = todo.id;
+        // this.content = todo.content;
+        // this.completed = todo.completed;
+        this.todo = todo;
     }
 
-    public int id;
-    public String content;
-    public boolean completed;
+    // public int id;
+    // public String content;
+    // public boolean completed;
+    public Todo todo;
 }

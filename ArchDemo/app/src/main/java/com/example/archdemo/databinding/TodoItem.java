@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.baurine.multitypeadapter.MultiTypeAdapter;
 import com.example.archdemo.R;
+import com.example.archdemo.arch.AppDatabase;
 
 /**
  * Created by baurine on 8/2/17.
@@ -26,6 +27,7 @@ public class TodoItem extends BaseItem {
                         adapter.notifyItemChanged(adapter.findPos(TodoItem.this));
                         break;
                     case R.id.btn_del:
+                        deleteTodo();
                         adapter.notifyItemRemoved(adapter.removeItem(TodoItem.this));
                         break;
                 }
@@ -36,14 +38,22 @@ public class TodoItem extends BaseItem {
     private TodoModel todoModel;
 
     public String getContent() {
-        return todoModel.content;
+        return todoModel.todo.content;
     }
 
     public boolean isCompleted() {
-        return todoModel.completed;
+        return todoModel.todo.completed;
     }
 
     private void toggleCompleted() {
-        todoModel.completed = !todoModel.completed;
+        // todoModel.completed = !todoModel.completed;
+
+        // modify db
+        todoModel.todo.completed = !todoModel.todo.completed;
+        AppDatabase.getDb().todoDao().update(todoModel.todo);
+    }
+
+    private void deleteTodo() {
+        AppDatabase.getDb().todoDao().delete(todoModel.todo);
     }
 }

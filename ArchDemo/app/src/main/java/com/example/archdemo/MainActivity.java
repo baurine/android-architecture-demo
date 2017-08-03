@@ -63,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
         etContent.setText("");
 
         Todo todo = new Todo(content);
-        AppDatabase.getDb(this).todoDao().insert(todo);
+        AppDatabase.getDb().todoDao().insert(todo);
 
         // refresh
         showTodosFromDb();
     }
 
     private void showTodosFromDb() {
-        List<Todo> todos = AppDatabase.getDb(this).todoDao().getAll();
+        List<Todo> todos = AppDatabase.getDb().todoDao().getAll();
         adapter.clearItems();
         for (Todo todo : todos) {
             adapter.addItem(new TodoModel(todo).createItem(adapter));
