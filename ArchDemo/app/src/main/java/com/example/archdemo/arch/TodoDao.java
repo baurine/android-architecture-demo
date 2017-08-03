@@ -1,5 +1,6 @@
 package com.example.archdemo.arch;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -16,6 +17,9 @@ import java.util.List;
 public interface TodoDao {
     @Query("SELECT * FROM todos")
     List<Todo> getAll();
+
+    @Query("SELECT * FROM todos")
+    LiveData<List<Todo>> getLiveTodos();
 
     @Update
     void update(Todo todo);

@@ -40,9 +40,11 @@ public class MainActivity extends LifecycleActivity {
         recyclerView = binding.recyclerView;
         initViews();
 
-        showTodosFromDb();
+        showTodosFromDb(AppDatabase.getDb().todoDao().getAll());
 
         observeLiveData();
+
+        observeLiveTodos();
     }
 
     private void initViews() {
@@ -76,11 +78,11 @@ public class MainActivity extends LifecycleActivity {
         AppDatabase.getDb().todoDao().insert(todo);
 
         // refresh
-        showTodosFromDb();
+        // showTodosFromDb(AppDatabase.getDb().todoDao().getAll());
     }
 
-    private void showTodosFromDb() {
-        List<Todo> todos = AppDatabase.getDb().todoDao().getAll();
+    private void showTodosFromDb(List<Todo> todos) {
+        // List<Todo> todos = AppDatabase.getDb().todoDao().getAll();
         adapter.clearItems();
         for (Todo todo : todos) {
             adapter.addItem(new TodoModel(todo).createItem(adapter));
@@ -95,5 +97,15 @@ public class MainActivity extends LifecycleActivity {
                 Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void observeLiveTodos() {
+        AppDatabase.getDb().todoDao().getLiveTodos()
+                .observe(this, new Observer<List<Todo>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Todo> todos) {
+                        showTodosFromDb(todos);
+                    }
+                });
     }
 }
