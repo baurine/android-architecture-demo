@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.baurine.multitypeadapter.MultiTypeAdapter;
 import com.example.archdemo.arch.AppDatabase;
+import com.example.archdemo.arch.MusicPlayer;
 import com.example.archdemo.arch.Todo;
 import com.example.archdemo.databinding.ActivityMainBinding;
 import com.example.archdemo.databinding.TodoModel;
@@ -45,6 +46,9 @@ public class MainActivity extends LifecycleActivity {
         observeLiveData();
 
         observeLiveTodos();
+
+        getLifecycle().addObserver(new MusicPlayer());
+        // getLifecycle().addObserver(new OtherObservers());
     }
 
     private void initViews() {
