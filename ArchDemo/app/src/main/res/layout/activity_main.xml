@@ -25,7 +25,14 @@
             android:text="Add"/>
 
         <TextView
+            android:textSize="20sp"
             android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textSize="20sp"
+            android:id="@+id/tv_date_view_model"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

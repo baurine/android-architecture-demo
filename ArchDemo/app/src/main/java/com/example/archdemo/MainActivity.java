@@ -3,6 +3,7 @@ package com.example.archdemo;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.baurine.multitypeadapter.MultiTypeAdapter;
 import com.example.archdemo.arch.AppDatabase;
+import com.example.archdemo.arch.DateViewModel;
 import com.example.archdemo.arch.MusicPlayer;
 import com.example.archdemo.arch.Todo;
 import com.example.archdemo.databinding.ActivityMainBinding;
@@ -35,8 +37,6 @@ public class MainActivity extends LifecycleActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         ActivityMainBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -55,6 +55,9 @@ public class MainActivity extends LifecycleActivity {
 
         now = new Date();
         binding.tvDate.setText(now.toString());
+
+        DateViewModel dateViewModel = ViewModelProviders.of(this).get(DateViewModel.class);
+        binding.tvDateViewModel.setText(dateViewModel.getDate().toString());
     }
 
     private void initViews() {
