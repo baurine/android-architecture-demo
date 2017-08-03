@@ -13,7 +13,7 @@ import android.content.Context;
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
-    public abstract TodoDao todoModel();
+    public abstract TodoDao todoDao();
 
     public static AppDatabase getDb(Context context) {
         if (INSTANCE == null) {

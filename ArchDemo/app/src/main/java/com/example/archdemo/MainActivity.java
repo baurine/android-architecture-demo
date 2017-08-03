@@ -9,8 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.baurine.multitypeadapter.MultiTypeAdapter;
+import com.example.archdemo.arch.AppDatabase;
+import com.example.archdemo.arch.Todo;
 import com.example.archdemo.databinding.ActivityMainBinding;
 import com.example.archdemo.databinding.TodoModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         etContent = binding.etContent;
         recyclerView = binding.recyclerView;
         initViews();
+
+        showTodosFromDb();
     }
 
     private void initViews() {
@@ -39,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         if (view.getId() == R.id.btn_add) {
-            addTodo();
+            // addTodo();
+            addTodoToDb();
         }
     }
 
@@ -48,5 +55,26 @@ public class MainActivity extends AppCompatActivity {
         adapter.addItem(new TodoModel(content).createItem(adapter));
         adapter.notifyDataSetChanged();
         etContent.setText("");
+    }
+
+    private void addTodoToDb() {
+        String content = etContent.getText().toString();
+        if (content.isEmpty()) return;
+        etContent.setText("");
+
+        Todo todo = new Todo(content);
+        AppDatabase.getDb(this).todoDao().insert(todo);
+
+        // refresh
+        showTodosFromDb();
+    }
+
+    private void showTodosFromDb() {
+        List<Todo> todos = AppDatabase.getDb(this).todoDao().getAll();
+        adapter.clearItems();
+        for (Todo todo : todos) {
+            adapter.addItem(new TodoModel(todo).createItem(adapter));
+        }
+        adapter.notifyDataSetChanged();
     }
 }
