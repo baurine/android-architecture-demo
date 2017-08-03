@@ -19,6 +19,7 @@ import com.example.archdemo.arch.Todo;
 import com.example.archdemo.databinding.ActivityMainBinding;
 import com.example.archdemo.databinding.TodoModel;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends LifecycleActivity {
@@ -28,6 +29,8 @@ public class MainActivity extends LifecycleActivity {
     private RecyclerView recyclerView;
 
     private MutableLiveData<String> contentLiveData = new MutableLiveData<>();
+
+    private Date now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class MainActivity extends LifecycleActivity {
 
         getLifecycle().addObserver(new MusicPlayer());
         // getLifecycle().addObserver(new OtherObservers());
+
+        now = new Date();
+        binding.tvDate.setText(now.toString());
     }
 
     private void initViews() {
@@ -76,7 +82,8 @@ public class MainActivity extends LifecycleActivity {
         if (content.isEmpty()) return;
         etContent.setText("");
 
-        contentLiveData.setValue(content);
+        // contentLiveData.setValue(content);
+        contentLiveData.setValue(now.toString());
 
         Todo todo = new Todo(content);
         AppDatabase.getDb().todoDao().insert(todo);
